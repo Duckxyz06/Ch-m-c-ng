@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Phiếu Báo Cáo Công Việc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2620;
+    --ink-2:#26332b;
+    --paper:#efe6cf;
+    --paper-2:#e6dabd;
+    --stamp:#a13f2e;
+    --stamp-dark:#7e3024;
+    --tan:#c7a25e;
+    --green:#41604a;
+    --text:#2a2418;
+    --text-soft:#6b6152;
+    --line:#c9bb96;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.03), transparent 40%),
+      var(--ink);
+    background-color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--text);
+    padding:28px 14px 60px;
+    display:flex;
+    justify-content:center;
+  }
+  .sheet{
+    width:100%;
+    max-width:460px;
+  }
+  .letterhead{
+    text-align:center;
+    color:var(--paper);
+    margin-bottom:16px;
+  }
+  .letterhead .kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:3px;
+    color:var(--tan);
+    text-transform:uppercase;
+  }
+  .letterhead h1{
+    font-family:'Special Elite', monospace;
+    font-size:22px;
+    margin:6px 0 2px;
+    letter-spacing:1px;
+  }
+  .letterhead .sub{
+    font-size:12px;
+    color:#c9bfa6;
+  }
+
+  .card{
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 27px),
+      var(--paper);
+    border:1px solid #d8caa2;
+    border-radius:3px;
+    box-shadow:0 20px 40px -12px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.4) inset;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:6px;
+    background:linear-gradient(90deg, var(--stamp), var(--tan) 40%, var(--green) 70%, var(--stamp));
+    opacity:0.85;
+  }
+
+  .card-inner{padding:26px 22px 20px;}
+
+  .ticket-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-soft);
+    border-bottom:1px dashed var(--line);
+    padding-bottom:10px;
+    margin-bottom:18px;
+    letter-spacing:0.5px;
+  }
+
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--green);
+    margin-bottom:6px;
+  }
+  .field .hint{
+    font-size:11.5px;
+    color:var(--text-soft);
+    font-style:italic;
+    margin-top:5px;
+    line-height:1.4;
+  }
+  input[type=text], input[type=date], textarea, input[type=number]{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    padding:10px 10px;
+    background:#faf6e9;
+    border:1px solid var(--line);
+    border-bottom:2px solid var(--tan);
+    border-radius:2px;
+    color:var(--text);
+    outline:none;
+    transition:border-color .15s, background .15s;
+  }
+  input:focus, textarea:focus{
+    border-bottom-color:var(--stamp);
+    background:#fffef8;
+  }
+  textarea{resize:vertical; min-height:70px; line-height:1.5;}
+
+  .row2{display:flex; gap:10px;}
+  .row2 .field{flex:1;}
+
+  .tabs{
+    display:flex;
+    gap:6px;
+  }
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:10px 6px 9px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.5px;
+    border:1px solid var(--line);
+    border-bottom:none;
+    border-radius:6px 6px 0 0;
+    background:#e3d7b4;
+    color:var(--text-soft);
+    cursor:pointer;
+    position:relative;
+    top:2px;
+    user-select:none;
+  }
+  .tab.active{
+    background:#faf6e9;
+    color:var(--text);
+    top:0;
+    border-bottom:2px solid #faf6e9;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.06);
+    font-weight:700;
+  }
+  .tab.active[data-v="scan"]{color:var(--stamp-dark);}
+  .tab.active[data-v="xuly"]{color:var(--green);}
+
+  .submit-btn{
+    width:100%;
+    margin-top:6px;
+    padding:14px;
+    background:var(--stamp);
+    color:#fbeee2;
+    border:none;
+    border-radius:3px;
+    font-family:'Special Elite', monospace;
+    font-size:15px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 6px 14px -4px rgba(161,63,46,0.5);
+    transition:transform .08s, box-shadow .08s;
+  }
+  .submit-btn:active{transform:scale(0.98); box-shadow:0 2px 6px -2px rgba(161,63,46,0.5);}
+  .submit-btn:disabled{opacity:0.55; cursor:default;}
+
+  .msg{
+    margin-top:12px;
+    font-size:12.5px;
+    text-align:center;
+    padding:9px;
+    border-radius:3px;
+    display:none;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .msg.ok{display:block; background:#e4ede2; color:var(--green); border:1px solid #b7cdb2;}
+  .msg.err{display:block; background:#f6dfd8; color:var(--stamp-dark); border:1px solid #e3b3a4;}
+
+  .footer-note{
+    text-align:center;
+    color:#9a8f76;
+    font-size:11px;
+    margin-top:14px;
+  }
+  .footer-note button{
+    background:none;
+    border:none;
+    color:var(--tan);
+    text-decoration:underline;
+    cursor:pointer;
+    font-size:11px;
+    font-family:inherit;
+  }
+
+  .history{
+    margin-top:16px;
+  }
+  .history summary{
+    cursor:pointer;
+    font-size:11.5px;
+    color:var(--text-soft);
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.5px;
+  }
+  .history-item{
+    font-size:12px;
+    padding:8px 0;
+    border-bottom:1px dashed var(--line);
+    color:var(--text);
+  }
+  .history-item b{color:var(--green);}
+
+  /* setup overlay */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(10,14,11,0.86);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    z-index:50;
+  }
+  .setup-card{
+    background:var(--paper);
+    max-width:400px;
+    width:100%;
+    border-radius:4px;
+    padding:22px 20px;
+    border:1px solid #d8caa2;
+  }
+  .setup-card h2{
+    font-family:'Special Elite', monospace;
+    font-size:17px;
+    margin:0 0 10px;
+    color:var(--stamp-dark);
+  }
+  .setup-card p{
+    font-size:12.5px;
+    color:var(--text-soft);
+    line-height:1.6;
+  }
+  .hidden{display:none !important;}
+
+  .gear{
+    position:fixed;
+    top:14px; right:16px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#e6dabd;
+    width:32px; height:32px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:14px;
+    z-index:10;
+  }
+</style>
+</head>
+<body>
+
+<button class="gear" id="gearBtn" title="Cài đặt">⚙</button>
+
+<div class="overlay hidden" id="setupOverlay">
+  <div class="setup-card">
+    <h2>Kết nối Google Sheet</h2>
+    <p>Dán URL Web App (Google Apps Script) đã triển khai để phiếu này gửi dữ liệu thẳng vào Google Sheet của bạn. Nếu chưa có, xem hướng dẫn tạo bên khung chat.</p>
+    <div class="field" style="margin-top:14px;">
+      <label>Web App URL</label>
+      <input type="text" id="urlInput" placeholder="https://script.google.com/macros/s/.../exec">
+    </div>
+    <div class="field">
+      <label>Họ tên mặc định (2 chữ)</label>
+      <input type="text" id="nameInput" placeholder="VD: Vũ Anh">
+    </div>
+    <button class="submit-btn" id="saveConfigBtn" style="margin-top:4px;">Lưu & bắt đầu</button>
+    <div class="msg" id="setupMsg"></div>
+  </div>
+</div>
+
+<div class="sheet">
+  <div class="letterhead">
+    <div class="kicker">Phòng lưu trữ · Nhật ký công tác</div>
+    <h1>PHIẾU BÁO CÁO CÔNG VIỆC</h1>
+    <div class="sub">Dữ liệu được ghi trực tiếp vào Google Sheet</div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="ticket-row">
+        <span id="ticketNo">SỐ PHIẾU: —</span>
+        <span id="ticketDate">—</span>
+      </div>
+
+      <form id="reportForm">
+        <div class="row2">
+          <div class="field">
+            <label>Ngày</label>
+            <input type="date" id="ngay" required>
+          </div>
+          <div class="field">
+            <label>Ca làm</label>
+            <input type="text" id="caLam" placeholder="VD: 7h30 - 16h30" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Họ tên (2 chữ)</label>
+          <input type="text" id="hoTen" placeholder="VD: Vũ Anh" required>
+        </div>
+
+        <div class="field">
+          <label>Vị trí</label>
+          <div class="tabs" id="viTriTabs">
+            <div class="tab active" data-v="scan">SCAN</div>
+            <div class="tab" data-v="xuly">XỬ LÝ</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label id="tenPhongLabel">Tên phông đã scan</label>
+          <input type="text" id="tenPhong" placeholder="VD: UBND huyện Thanh Bình" required>
+        </div>
+
+        <div class="field">
+          <label>Hộp số, hồ sơ số</label>
+          <input type="text" id="hopSo" placeholder="VD: Hộp 12, HS 105-120" required>
+        </div>
+
+        <div class="field">
+          <label id="tongSoLabel">Tổng số HS đã scan</label>
+          <input type="text" id="tongSo" placeholder="VD: 250 HS" required>
+          <div class="hint" id="tongSoHint">Chỉ ghi số tổng.</div>
+        </div>
+
+        <div class="field">
+          <label>Tình trạng tài liệu / Khó khăn</label>
+          <textarea id="khoKhan" placeholder="Ghi càng cụ thể càng tốt: ví dụ TL còn sót ghim, giấy mỏng, cần scan lại (ghi rõ HS số mấy, bao nhiêu), hồ sơ loạn trang, scan mờ, số HS cần xử lý lại..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Đề xuất (nếu có)</label>
+          <textarea id="deXuat" placeholder="Không bắt buộc"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Ghi nhận</button>
+        <div class="msg" id="formMsg"></div>
+      </form>
+
+      <details class="history">
+        <summary>Lịch sử đã gửi hôm nay</summary>
+        <div id="historyList" style="margin-top:8px;"></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Kết nối tới: <span id="urlPreview">chưa cài đặt</span> · <button id="changeUrlBtn">đổi</button>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let config = { url: '', hoTen: '' };
+let viTri = 'scan';
+
+const todayStr = () => new Date().toISOString().slice(0,10);
+
+function updateLabels(){
+  if(viTri === 'scan'){
+    $('tenPhongLabel').textContent = 'Tên phông đã scan';
+    $('tenPhong').placeholder = 'VD: UBND huyện Thanh Bình';
+    $('tongSoLabel').textContent = 'Tổng số HS đã scan';
+    $('tongSo').placeholder = 'VD: 250 HS';
+    $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 250 HS.';
+  } else {
+    $('tenPhongLabel').textContent = 'Tên phông đã xử lý';
+    $('tenPhong').placeholder = 'VD: UBND huyện Thanh Bình';
+    $('tongSoLabel').textContent = 'Tổng HS đã xử lý ảnh';
+    $('tongSo').placeholder = 'VD: 200 HS';
+    $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 200 HS.';
+  }
+}
+
+document.querySelectorAll('#viTriTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#viTriTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    viTri = tab.dataset.v;
+    updateLabels();
+  });
+});
+
+function ticketNumberFor(dateStr, count){
+  return 'SỐ PHIẾU: ' + dateStr.replace(/-/g,'').slice(2) + '-' + String(count+1).padStart(2,'0');
+}
+
+async function loadHistory(){
+  try{
+    const res = await window.storage.get('submissions', false);
+    return res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){ return []; }
+}
+
+async function saveHistory(list){
+  try{
+    await window.storage.set('submissions', JSON.stringify(list.slice(-50)), false);
+  }catch(e){ console.error('Lỗi lưu lịch sử', e); }
+}
+
+async function renderHistory(){
+  const list = await loadHistory();
+  const today = todayStr();
+  const todays = list.filter(x => x.ngay === today).reverse();
+  const el = $('historyList');
+  if(todays.length === 0){
+    el.innerHTML = '<div class="history-item" style="color:#9a8f76;">Chưa có phiếu nào hôm nay.</div>';
+    return;
+  }
+  el.innerHTML = todays.map(x => `
+    <div class="history-item">
+      <b>${x.hoTen}</b> · ${x.viTri === 'scan' ? 'Scan' : 'Xử lý'} · ${x.tenPhong} — ${x.tongSo}
+    </div>
+  `).join('');
+}
+
+async function loadConfig(){
+  try{
+    const res = await window.storage.get('config', false);
+    if(res && res.value) config = JSON.parse(res.value);
+  }catch(e){ config = { url:'', hoTen:'' }; }
+}
+
+async function saveConfig(){
+  await window.storage.set('config', JSON.stringify(config), false);
+}
+
+function refreshConfigUI(){
+  $('urlPreview').textContent = config.url ? (config.url.length > 38 ? config.url.slice(0,35)+'…' : config.url) : 'chưa cài đặt';
+  if(config.hoTen) $('hoTen').value = config.hoTen;
+}
+
+function showSetup(){ $('setupOverlay').classList.remove('hidden'); }
+function hideSetup(){ $('setupOverlay').classList.add('hidden'); }
+
+$('gearBtn').addEventListener('click', ()=>{
+  $('urlInput').value = config.url || '';
+  $('nameInput').value = config.hoTen || '';
+  showSetup();
+});
+$('changeUrlBtn').addEventListener('click', ()=>{
+  $('urlInput').value = config.url || '';
+  $('nameInput').value = config.hoTen || '';
+  showSetup();
+});
+
+$('saveConfigBtn').addEventListener('click', async ()=>{
+  const url = $('urlInput').value.trim();
+  const name = $('nameInput').value.trim();
+  const msg = $('setupMsg');
+  if(!url.startsWith('https://script.google.com')){
+    msg.className = 'msg err';
+    msg.textContent = 'URL chưa hợp lệ. Cần bắt đầu bằng https://script.google.com';
+    return;
+  }
+  config.url = url;
+  config.hoTen = name;
+  await saveConfig();
+  refreshConfigUI();
+  msg.className = 'msg';
+  hideSetup();
+});
+
+$('reportForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const formMsg = $('formMsg');
+  formMsg.className = 'msg';
+
+  if(!config.url){
+    showSetup();
+    return;
+  }
+
+  const payload = {
+    ngay: $('ngay').value,
+    caLam: $('caLam').value.trim(),
+    hoTen: $('hoTen').value.trim(),
+    viTri: viTri === 'scan' ? 'Scan' : 'Xử lý',
+    tenPhong: $('tenPhong').value.trim(),
+    hopSo: $('hopSo').value.trim(),
+    tongSo: $('tongSo').value.trim(),
+    khoKhan: $('khoKhan').value.trim(),
+    deXuat: $('deXuat').value.trim(),
+    submittedAt: new Date().toISOString()
+  };
+
+  const btn = $('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Đang gửi...';
+
+  try{
+    const res = await fetch(config.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    let ok = res.ok;
+    try{
+      const data = await res.json();
+      ok = data.status === 'ok';
+    }catch(_e){ /* nếu không đọc được JSON vẫn coi theo res.ok */ }
+
+    if(!ok) throw new Error('Apps Script phản hồi lỗi');
+
+    formMsg.className = 'msg ok';
+    formMsg.textContent = '✓ Đã ghi nhận và lưu vào Google Sheet.';
+
+    const list = await loadHistory();
+    list.push({ ngay: payload.ngay, hoTen: payload.hoTen, viTri: viTri, tenPhong: payload.tenPhong, tongSo: payload.tongSo });
+    await saveHistory(list);
+    config.hoTen = payload.hoTen;
+    await saveConfig();
+    await renderHistory();
+    await updateTicket();
+
+    // reset các trường trừ ngày & họ tên
+    $('caLam').value = '';
+    $('tenPhong').value = '';
+    $('hopSo').value = '';
+    $('tongSo').value = '';
+    $('khoKhan').value = '';
+    $('deXuat').value = '';
+
+  }catch(err){
+    formMsg.className = 'msg err';
+    formMsg.textContent = '✗ Gửi thất bại (' + err.message + '). Kiểm tra lại kết nối Google Sheet ở nút ⚙.';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Ghi nhận';
+  }
+});
+
+async function updateTicket(){
+  const list = await loadHistory();
+  const today = todayStr();
+  const count = list.filter(x => x.ngay === today).length;
+  $('ticketNo').textContent = ticketNumberFor(today, count);
+  const d = new Date(today);
+  $('ticketDate').textContent = d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+async function init(){
+  $('ngay').value = todayStr();
+  updateLabels();
+  await loadConfig();
+  refreshConfigUI();
+  if(!config.url) showSetup();
+  await renderHistory();
+  await updateTicket();
+}
+
+init();
+</script>
+</body>
+</html>
