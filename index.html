@@ -341,11 +341,6 @@
         </div>
 
         <div class="field">
-          <label>Hộp số, hồ sơ số</label>
-          <input type="text" id="hopSo" placeholder="VD: Hộp 12, HS 105-120" required>
-        </div>
-
-        <div class="field">
           <label id="tongSoLabel">Tổng số HS đã scan</label>
           <input type="text" id="tongSo" placeholder="VD: 250 HS" required>
           <div class="hint" id="tongSoHint">Chỉ ghi số tổng.</div>
@@ -477,17 +472,36 @@ $('saveConfigBtn').addEventListener('click', async ()=>{
   const url = $('urlInput').value.trim();
   const name = $('nameInput').value.trim();
   const msg = $('setupMsg');
+  const saveBtn = $('saveConfigBtn');
+
   if(!url.startsWith('https://script.google.com')){
     msg.className = 'msg err';
     msg.textContent = 'URL chưa hợp lệ. Cần bắt đầu bằng https://script.google.com';
     return;
   }
+
   config.url = url;
   config.hoTen = name;
-  await saveConfig();
-  refreshConfigUI();
-  msg.className = 'msg';
-  hideSetup();
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Đang lưu...';
+
+  try{
+    await saveConfig();
+    msg.className = 'msg';
+    refreshConfigUI();
+    hideSetup();
+  }catch(err){
+    // Vẫn cho dùng tiếp trong phiên này dù không lưu được vào bộ nhớ lâu dài
+    console.error('Lỗi lưu config', err);
+    refreshConfigUI();
+    msg.className = 'msg err';
+    msg.textContent = 'Không lưu được cấu hình lâu dài (' + err.message + '), nhưng bạn vẫn có thể dùng ngay bây giờ.';
+    setTimeout(hideSetup, 1800);
+  }finally{
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Lưu & bắt đầu';
+  }
 });
 
 $('reportForm').addEventListener('submit', async (e)=>{
@@ -506,7 +520,6 @@ $('reportForm').addEventListener('submit', async (e)=>{
     hoTen: $('hoTen').value.trim(),
     viTri: viTri === 'scan' ? 'Scan' : 'Xử lý',
     tenPhong: $('tenPhong').value.trim(),
-    hopSo: $('hopSo').value.trim(),
     tongSo: $('tongSo').value.trim(),
     khoKhan: $('khoKhan').value.trim(),
     deXuat: $('deXuat').value.trim(),
@@ -518,18 +531,15 @@ $('reportForm').addEventListener('submit', async (e)=>{
   btn.textContent = 'Đang gửi...';
 
   try{
-    const res = await fetch(config.url, {
+    // Dùng no-cors: Google Apps Script không trả header CORS chuẩn nên trình duyệt
+    // thường chặn việc ĐỌC phản hồi (dù server đã xử lý xong). no-cors bỏ qua bước
+    // đọc phản hồi đó, để tránh báo "thất bại" sai trong khi dữ liệu đã được ghi.
+    await fetch(config.url, {
       method: 'POST',
+      mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
-    let ok = res.ok;
-    try{
-      const data = await res.json();
-      ok = data.status === 'ok';
-    }catch(_e){ /* nếu không đọc được JSON vẫn coi theo res.ok */ }
-
-    if(!ok) throw new Error('Apps Script phản hồi lỗi');
 
     formMsg.className = 'msg ok';
     formMsg.textContent = '✓ Đã ghi nhận và lưu vào Google Sheet.';
@@ -545,7 +555,6 @@ $('reportForm').addEventListener('submit', async (e)=>{
     // reset các trường trừ ngày & họ tên
     $('caLam').value = '';
     $('tenPhong').value = '';
-    $('hopSo').value = '';
     $('tongSo').value = '';
     $('khoKhan').value = '';
     $('deXuat').value = '';
