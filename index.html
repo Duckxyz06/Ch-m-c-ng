@@ -9,9 +9,7 @@
 <style>
   :root{
     --ink:#1c2620;
-    --ink-2:#26332b;
     --paper:#efe6cf;
-    --paper-2:#e6dabd;
     --stamp:#a13f2e;
     --stamp-dark:#7e3024;
     --tan:#c7a25e;
@@ -34,32 +32,17 @@
     display:flex;
     justify-content:center;
   }
-  .sheet{
-    width:100%;
-    max-width:460px;
-  }
-  .letterhead{
-    text-align:center;
-    color:var(--paper);
-    margin-bottom:16px;
-  }
+  .sheet{ width:100%; max-width:460px; }
+  .letterhead{ text-align:center; color:var(--paper); margin-bottom:16px; }
   .letterhead .kicker{
     font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:3px;
-    color:var(--tan);
-    text-transform:uppercase;
+    font-size:11px; letter-spacing:3px; color:var(--tan); text-transform:uppercase;
   }
   .letterhead h1{
     font-family:'Special Elite', monospace;
-    font-size:22px;
-    margin:6px 0 2px;
-    letter-spacing:1px;
+    font-size:22px; margin:6px 0 2px; letter-spacing:1px;
   }
-  .letterhead .sub{
-    font-size:12px;
-    color:#c9bfa6;
-  }
+  .letterhead .sub{ font-size:12px; color:#c9bfa6; }
 
   .card{
     background:
@@ -68,233 +51,101 @@
     border:1px solid #d8caa2;
     border-radius:3px;
     box-shadow:0 20px 40px -12px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.4) inset;
-    position:relative;
-    overflow:hidden;
+    position:relative; overflow:hidden;
   }
   .card::before{
-    content:"";
-    position:absolute;
-    top:0; left:0; right:0;
-    height:6px;
+    content:""; position:absolute; top:0; left:0; right:0; height:6px;
     background:linear-gradient(90deg, var(--stamp), var(--tan) 40%, var(--green) 70%, var(--stamp));
     opacity:0.85;
   }
-
   .card-inner{padding:26px 22px 20px;}
 
   .ticket-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    color:var(--text-soft);
-    border-bottom:1px dashed var(--line);
-    padding-bottom:10px;
-    margin-bottom:18px;
-    letter-spacing:0.5px;
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-soft);
+    border-bottom:1px dashed var(--line); padding-bottom:10px; margin-bottom:18px; letter-spacing:0.5px;
   }
 
   .field{margin-bottom:16px;}
   .field label{
-    display:block;
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:1.2px;
-    text-transform:uppercase;
-    color:var(--green);
-    margin-bottom:6px;
+    display:block; font-size:11px; font-weight:600; letter-spacing:1.2px;
+    text-transform:uppercase; color:var(--green); margin-bottom:6px;
   }
-  .field .hint{
-    font-size:11.5px;
-    color:var(--text-soft);
-    font-style:italic;
-    margin-top:5px;
-    line-height:1.4;
+  .field .hint{ font-size:11.5px; color:var(--text-soft); font-style:italic; margin-top:5px; line-height:1.4; }
+  input[type=text], input[type=date], textarea{
+    width:100%; font-family:'IBM Plex Sans', sans-serif; font-size:14.5px; padding:10px 10px;
+    background:#faf6e9; border:1px solid var(--line); border-bottom:2px solid var(--tan);
+    border-radius:2px; color:var(--text); outline:none; transition:border-color .15s, background .15s;
   }
-  input[type=text], input[type=date], textarea, input[type=number]{
-    width:100%;
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:14.5px;
-    padding:10px 10px;
-    background:#faf6e9;
-    border:1px solid var(--line);
-    border-bottom:2px solid var(--tan);
-    border-radius:2px;
-    color:var(--text);
-    outline:none;
-    transition:border-color .15s, background .15s;
-  }
-  input:focus, textarea:focus{
-    border-bottom-color:var(--stamp);
-    background:#fffef8;
-  }
+  input:focus, textarea:focus{ border-bottom-color:var(--stamp); background:#fffef8; }
   textarea{resize:vertical; min-height:70px; line-height:1.5;}
 
   .row2{display:flex; gap:10px;}
   .row2 .field{flex:1;}
 
-  .tabs{
-    display:flex;
-    gap:6px;
-  }
+  .tabs{display:flex; gap:6px;}
   .tab{
-    flex:1;
-    text-align:center;
-    padding:10px 6px 9px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px;
-    font-weight:500;
-    letter-spacing:0.5px;
-    border:1px solid var(--line);
-    border-bottom:none;
-    border-radius:6px 6px 0 0;
-    background:#e3d7b4;
-    color:var(--text-soft);
-    cursor:pointer;
-    position:relative;
-    top:2px;
-    user-select:none;
+    flex:1; text-align:center; padding:10px 6px 9px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:500; letter-spacing:0.5px;
+    border:1px solid var(--line); border-bottom:none; border-radius:6px 6px 0 0;
+    background:#e3d7b4; color:var(--text-soft); cursor:pointer; position:relative; top:2px; user-select:none;
   }
   .tab.active{
-    background:#faf6e9;
-    color:var(--text);
-    top:0;
-    border-bottom:2px solid #faf6e9;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.06);
-    font-weight:700;
+    background:#faf6e9; color:var(--text); top:0; border-bottom:2px solid #faf6e9;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.06); font-weight:700;
   }
   .tab.active[data-v="scan"]{color:var(--stamp-dark);}
   .tab.active[data-v="xuly"]{color:var(--green);}
 
   .submit-btn{
-    width:100%;
-    margin-top:6px;
-    padding:14px;
-    background:var(--stamp);
-    color:#fbeee2;
-    border:none;
-    border-radius:3px;
-    font-family:'Special Elite', monospace;
-    font-size:15px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    cursor:pointer;
-    box-shadow:0 6px 14px -4px rgba(161,63,46,0.5);
+    width:100%; margin-top:6px; padding:14px; background:var(--stamp); color:#fbeee2; border:none;
+    border-radius:3px; font-family:'Special Elite', monospace; font-size:15px; letter-spacing:2px;
+    text-transform:uppercase; cursor:pointer; box-shadow:0 6px 14px -4px rgba(161,63,46,0.5);
     transition:transform .08s, box-shadow .08s;
   }
   .submit-btn:active{transform:scale(0.98); box-shadow:0 2px 6px -2px rgba(161,63,46,0.5);}
   .submit-btn:disabled{opacity:0.55; cursor:default;}
 
   .msg{
-    margin-top:12px;
-    font-size:12.5px;
-    text-align:center;
-    padding:9px;
-    border-radius:3px;
-    display:none;
-    font-family:'IBM Plex Mono', monospace;
+    margin-top:12px; font-size:12.5px; text-align:center; padding:9px; border-radius:3px;
+    display:none; font-family:'IBM Plex Mono', monospace;
   }
   .msg.ok{display:block; background:#e4ede2; color:var(--green); border:1px solid #b7cdb2;}
   .msg.err{display:block; background:#f6dfd8; color:var(--stamp-dark); border:1px solid #e3b3a4;}
 
-  .footer-note{
-    text-align:center;
-    color:#9a8f76;
-    font-size:11px;
-    margin-top:14px;
+  .msg-preview{
+    display:none; margin-top:12px; background:#fffef8; border:1px solid var(--line);
+    border-radius:3px; padding:12px;
   }
-  .footer-note button{
-    background:none;
-    border:none;
-    color:var(--tan);
-    text-decoration:underline;
-    cursor:pointer;
-    font-size:11px;
-    font-family:inherit;
+  .msg-preview.show{display:block;}
+  .msg-preview pre{
+    white-space:pre-wrap; word-break:break-word; font-family:'IBM Plex Mono', monospace;
+    font-size:12px; line-height:1.6; margin:0 0 10px; color:var(--text);
   }
+  .copy-btn{
+    width:100%; padding:9px; background:var(--green); color:#eef3ea; border:none; border-radius:3px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:1px; cursor:pointer;
+  }
+  .copy-btn.copied{background:#2f4a37;}
 
-  .history{
-    margin-top:16px;
-  }
+  .history{margin-top:16px;}
   .history summary{
-    cursor:pointer;
-    font-size:11.5px;
-    color:var(--text-soft);
-    font-family:'IBM Plex Mono', monospace;
-    letter-spacing:0.5px;
+    cursor:pointer; font-size:11.5px; color:var(--text-soft);
+    font-family:'IBM Plex Mono', monospace; letter-spacing:0.5px;
   }
-  .history-item{
-    font-size:12px;
-    padding:8px 0;
-    border-bottom:1px dashed var(--line);
-    color:var(--text);
-  }
+  .history-item{ font-size:12px; padding:8px 0; border-bottom:1px dashed var(--line); color:var(--text); }
   .history-item b{color:var(--green);}
 
-  /* setup overlay */
-  .overlay{
-    position:fixed; inset:0;
-    background:rgba(10,14,11,0.86);
-    display:flex; align-items:center; justify-content:center;
-    padding:20px;
-    z-index:50;
+  .util-row{ display:flex; gap:8px; margin-top:10px; }
+  .util-btn{
+    flex:1; padding:8px; font-size:11px; font-family:'IBM Plex Mono', monospace;
+    background:#e3d7b4; border:1px solid var(--line); border-radius:3px; color:var(--text-soft); cursor:pointer;
   }
-  .setup-card{
-    background:var(--paper);
-    max-width:400px;
-    width:100%;
-    border-radius:4px;
-    padding:22px 20px;
-    border:1px solid #d8caa2;
-  }
-  .setup-card h2{
-    font-family:'Special Elite', monospace;
-    font-size:17px;
-    margin:0 0 10px;
-    color:var(--stamp-dark);
-  }
-  .setup-card p{
-    font-size:12.5px;
-    color:var(--text-soft);
-    line-height:1.6;
-  }
-  .hidden{display:none !important;}
 
-  .gear{
-    position:fixed;
-    top:14px; right:16px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.18);
-    color:#e6dabd;
-    width:32px; height:32px;
-    border-radius:50%;
-    cursor:pointer;
-    font-size:14px;
-    z-index:10;
-  }
+  .footer-note{ text-align:center; color:#9a8f76; font-size:11px; margin-top:14px; line-height:1.6; }
 </style>
 </head>
 <body>
-
-<button class="gear" id="gearBtn" title="Cài đặt">⚙</button>
-
-<div class="overlay hidden" id="setupOverlay">
-  <div class="setup-card">
-    <h2>Kết nối Google Sheet</h2>
-    <p>Dán URL Web App (Google Apps Script) đã triển khai để phiếu này gửi dữ liệu thẳng vào Google Sheet của bạn. Nếu chưa có, xem hướng dẫn tạo bên khung chat.</p>
-    <div class="field" style="margin-top:14px;">
-      <label>Web App URL</label>
-      <input type="text" id="urlInput" placeholder="https://script.google.com/macros/s/.../exec">
-    </div>
-    <div class="field">
-      <label>Họ tên mặc định (2 chữ)</label>
-      <input type="text" id="nameInput" placeholder="VD: Vũ Anh">
-    </div>
-    <button class="submit-btn" id="saveConfigBtn" style="margin-top:4px;">Lưu & bắt đầu</button>
-    <div class="msg" id="setupMsg"></div>
-  </div>
-</div>
 
 <div class="sheet">
   <div class="letterhead">
@@ -358,24 +209,39 @@
 
         <button type="submit" class="submit-btn" id="submitBtn">Ghi nhận</button>
         <div class="msg" id="formMsg"></div>
+
+        <div class="msg-preview" id="msgPreview">
+          <pre id="msgPreviewText"></pre>
+          <button type="button" class="copy-btn" id="copyBtn">Copy tin nhắn để gửi Zalo/Messenger</button>
+        </div>
       </form>
 
       <details class="history">
         <summary>Lịch sử đã gửi hôm nay</summary>
         <div id="historyList" style="margin-top:8px;"></div>
+        <div class="util-row">
+          <button type="button" class="util-btn" id="backupBtn">⬇ Tải file backup</button>
+          <button type="button" class="util-btn" id="restoreBtn">⬆ Khôi phục từ file</button>
+        </div>
+        <input type="file" id="restoreFile" accept="application/json" style="display:none;">
       </details>
     </div>
   </div>
 
   <div class="footer-note">
-    Kết nối tới: <span id="urlPreview">chưa cài đặt</span> · <button id="changeUrlBtn">đổi</button>
+    Dữ liệu lưu trên chính máy này + Google Sheet.<br>Mỗi lần gửi phiếu sẽ tự tải 1 file JSON sao lưu.
   </div>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
 
-let config = { url: '', hoTen: '' };
+// Link Google Apps Script Web App đã được cố định sẵn — không cần hỏi lại.
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyd11TDGYeS9VQRx4fC8iINVa2WoiUxAgMVUGf6zpN5M2oKag0V5TPzGBSLsfqb20qn/exec';
+
+const LS_HISTORY_KEY = 'bc_submissions_v1';
+const LS_NAME_KEY = 'bc_last_name_v1';
+
 let viTri = 'scan';
 
 const todayStr = () => new Date().toISOString().slice(0,10);
@@ -383,13 +249,11 @@ const todayStr = () => new Date().toISOString().slice(0,10);
 function updateLabels(){
   if(viTri === 'scan'){
     $('tenPhongLabel').textContent = 'Tên phông đã scan';
-    $('tenPhong').placeholder = 'VD: UBND huyện Thanh Bình';
     $('tongSoLabel').textContent = 'Tổng số HS đã scan';
     $('tongSo').placeholder = 'VD: 250 HS';
     $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 250 HS.';
   } else {
     $('tenPhongLabel').textContent = 'Tên phông đã xử lý';
-    $('tenPhong').placeholder = 'VD: UBND huyện Thanh Bình';
     $('tongSoLabel').textContent = 'Tổng HS đã xử lý ảnh';
     $('tongSo').placeholder = 'VD: 200 HS';
     $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 200 HS.';
@@ -405,27 +269,33 @@ document.querySelectorAll('#viTriTabs .tab').forEach(tab=>{
   });
 });
 
+// ---------- Lưu trữ cục bộ (localStorage) ----------
+function loadHistory(){
+  try{
+    const raw = localStorage.getItem(LS_HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ console.error('Lỗi đọc lịch sử', e); return []; }
+}
+function saveHistory(list){
+  try{
+    localStorage.setItem(LS_HISTORY_KEY, JSON.stringify(list.slice(-500)));
+  }catch(e){ console.error('Lỗi lưu lịch sử', e); }
+}
+function loadLastName(){
+  try{ return localStorage.getItem(LS_NAME_KEY) || ''; }catch(e){ return ''; }
+}
+function saveLastName(name){
+  try{ localStorage.setItem(LS_NAME_KEY, name); }catch(e){ /* bỏ qua */ }
+}
+
 function ticketNumberFor(dateStr, count){
   return 'SỐ PHIẾU: ' + dateStr.replace(/-/g,'').slice(2) + '-' + String(count+1).padStart(2,'0');
 }
 
-async function loadHistory(){
-  try{
-    const res = await window.storage.get('submissions', false);
-    return res && res.value ? JSON.parse(res.value) : [];
-  }catch(e){ return []; }
-}
-
-async function saveHistory(list){
-  try{
-    await window.storage.set('submissions', JSON.stringify(list.slice(-50)), false);
-  }catch(e){ console.error('Lỗi lưu lịch sử', e); }
-}
-
-async function renderHistory(){
-  const list = await loadHistory();
+function renderHistory(){
+  const list = loadHistory();
   const today = todayStr();
-  const todays = list.filter(x => x.ngay === today).reverse();
+  const todays = list.filter(x => x.ngay === today).slice().reverse();
   const el = $('historyList');
   if(todays.length === 0){
     el.innerHTML = '<div class="history-item" style="color:#9a8f76;">Chưa có phiếu nào hôm nay.</div>';
@@ -433,90 +303,125 @@ async function renderHistory(){
   }
   el.innerHTML = todays.map(x => `
     <div class="history-item">
-      <b>${x.hoTen}</b> · ${x.viTri === 'scan' ? 'Scan' : 'Xử lý'} · ${x.tenPhong} — ${x.tongSo}
+      <b>${x.hoTen}</b> · ${x.viTri === 'Scan' ? 'Scan' : 'Xử lý'} · ${x.tenPhong} — ${x.tongSo}
     </div>
   `).join('');
 }
 
-async function loadConfig(){
-  try{
-    const res = await window.storage.get('config', false);
-    if(res && res.value) config = JSON.parse(res.value);
-  }catch(e){ config = { url:'', hoTen:'' }; }
+function updateTicket(){
+  const list = loadHistory();
+  const today = todayStr();
+  const count = list.filter(x => x.ngay === today).length;
+  $('ticketNo').textContent = ticketNumberFor(today, count);
+  const d = new Date(today);
+  $('ticketDate').textContent = d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
 }
 
-async function saveConfig(){
+// ---------- Backup / Restore JSON ----------
+function downloadBackup(list){
   try{
-    await window.storage.set('config', JSON.stringify(config), false);
+    const blob = new Blob([JSON.stringify(list, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const now = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const stamp = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+    a.href = url;
+    a.download = `bao-cao-cong-viec-backup-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 3000);
+  }catch(e){ console.error('Lỗi tải file backup', e); }
+}
+
+$('backupBtn').addEventListener('click', ()=>{
+  downloadBackup(loadHistory());
+});
+
+$('restoreBtn').addEventListener('click', ()=>{
+  $('restoreFile').click();
+});
+
+$('restoreFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const imported = JSON.parse(reader.result);
+      if(!Array.isArray(imported)) throw new Error('File không đúng định dạng (cần là 1 danh sách).');
+      const current = loadHistory();
+      const seen = new Set(current.map(x => x.submittedAt || (x.ngay+x.hoTen+x.tongSo)));
+      let added = 0;
+      imported.forEach(item=>{
+        const key = item.submittedAt || (item.ngay+item.hoTen+item.tongSo);
+        if(!seen.has(key)){
+          current.push(item);
+          seen.add(key);
+          added++;
+        }
+      });
+      saveHistory(current);
+      renderHistory();
+      updateTicket();
+      alert(`Đã khôi phục xong. Thêm mới ${added} phiếu từ file (bỏ qua các phiếu trùng).`);
+    }catch(err){
+      alert('Không đọc được file backup: ' + err.message);
+    }finally{
+      e.target.value = '';
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+});
+
+// ---------- Tin nhắn tự động theo mẫu báo cáo gốc ----------
+function buildMessage(payload){
+  const parts = payload.ngay.split('-');
+  const ngayVN = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : payload.ngay;
+  const viTriLabel = payload.viTri;
+  const tongSoLabel = payload.viTri === 'Scan' ? 'Tổng số HS đã scan' : 'Tổng HS đã xử lý ảnh';
+  const lines = [
+    `BÁO CÁO CÔNG VIỆC NGÀY ${ngayVN}`,
+    `Ca làm: ${payload.caLam}`,
+    `Họ tên: ${payload.hoTen}`,
+    `Vị trí: ${viTriLabel}`,
+    `- Tên phông đã ${payload.viTri === 'Scan' ? 'scan' : 'xử lý'}: ${payload.tenPhong}`,
+    `+ ${tongSoLabel}: ${payload.tongSo}`,
+    `• Tình trạng tài liệu/Khó khăn trong quá trình làm: ${payload.khoKhan || 'Không có'}`,
+    `• Đề xuất (nếu có): ${payload.deXuat || 'Không có'}`
+  ];
+  return lines.join('\n');
+}
+
+$('copyBtn').addEventListener('click', async ()=>{
+  const text = $('msgPreviewText').textContent;
+  const btn = $('copyBtn');
+  try{
+    await navigator.clipboard.writeText(text);
   }catch(e){
-    console.error('Lỗi lưu config (không ảnh hưởng đến việc gửi phiếu)', e);
+    // fallback cho trình duyệt cũ / không hỗ trợ Clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
   }
-}
-
-function refreshConfigUI(){
-  $('urlPreview').textContent = config.url ? (config.url.length > 38 ? config.url.slice(0,35)+'…' : config.url) : 'chưa cài đặt';
-  if(config.hoTen) $('hoTen').value = config.hoTen;
-}
-
-function showSetup(){ $('setupOverlay').classList.remove('hidden'); }
-function hideSetup(){ $('setupOverlay').classList.add('hidden'); }
-
-$('gearBtn').addEventListener('click', ()=>{
-  $('urlInput').value = config.url || '';
-  $('nameInput').value = config.hoTen || '';
-  showSetup();
-});
-$('changeUrlBtn').addEventListener('click', ()=>{
-  $('urlInput').value = config.url || '';
-  $('nameInput').value = config.hoTen || '';
-  showSetup();
+  btn.textContent = '✓ Đã copy!';
+  btn.classList.add('copied');
+  setTimeout(()=>{
+    btn.textContent = 'Copy tin nhắn để gửi Zalo/Messenger';
+    btn.classList.remove('copied');
+  }, 2000);
 });
 
-$('saveConfigBtn').addEventListener('click', async ()=>{
-  const url = $('urlInput').value.trim();
-  const name = $('nameInput').value.trim();
-  const msg = $('setupMsg');
-  const saveBtn = $('saveConfigBtn');
-
-  if(!url.startsWith('https://script.google.com')){
-    msg.className = 'msg err';
-    msg.textContent = 'URL chưa hợp lệ. Cần bắt đầu bằng https://script.google.com';
-    return;
-  }
-
-  config.url = url;
-  config.hoTen = name;
-
-  saveBtn.disabled = true;
-  saveBtn.textContent = 'Đang lưu...';
-
-  try{
-    await saveConfig();
-    msg.className = 'msg';
-    refreshConfigUI();
-    hideSetup();
-  }catch(err){
-    // Vẫn cho dùng tiếp trong phiên này dù không lưu được vào bộ nhớ lâu dài
-    console.error('Lỗi lưu config', err);
-    refreshConfigUI();
-    msg.className = 'msg err';
-    msg.textContent = 'Không lưu được cấu hình lâu dài (' + err.message + '), nhưng bạn vẫn có thể dùng ngay bây giờ.';
-    setTimeout(hideSetup, 1800);
-  }finally{
-    saveBtn.disabled = false;
-    saveBtn.textContent = 'Lưu & bắt đầu';
-  }
-});
-
+// ---------- Gửi phiếu ----------
 $('reportForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const formMsg = $('formMsg');
   formMsg.className = 'msg';
-
-  if(!config.url){
-    showSetup();
-    return;
-  }
+  $('msgPreview').classList.remove('show');
 
   const payload = {
     ngay: $('ngay').value,
@@ -535,10 +440,10 @@ $('reportForm').addEventListener('submit', async (e)=>{
   btn.textContent = 'Đang gửi...';
 
   try{
-    // Dùng no-cors: Google Apps Script không trả header CORS chuẩn nên trình duyệt
-    // thường chặn việc ĐỌC phản hồi (dù server đã xử lý xong). no-cors bỏ qua bước
-    // đọc phản hồi đó, để tránh báo "thất bại" sai trong khi dữ liệu đã được ghi.
-    await fetch(config.url, {
+    // no-cors: Google Apps Script không trả header CORS chuẩn nên trình duyệt
+    // thường chặn việc ĐỌC phản hồi dù server đã xử lý xong. Bỏ qua đọc phản hồi
+    // để tránh báo "thất bại" sai trong khi dữ liệu đã được ghi vào Sheet.
+    await fetch(WEBAPP_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -548,19 +453,22 @@ $('reportForm').addEventListener('submit', async (e)=>{
     formMsg.className = 'msg ok';
     formMsg.textContent = '✓ Đã ghi nhận và lưu vào Google Sheet.';
 
-    // Các thao tác phụ bên dưới (lưu lịch sử cục bộ, số phiếu...) không được
-    // làm thay đổi thông báo thành công ở trên, dù chúng có lỗi.
+    // Sổ phụ cục bộ: không được làm sai lệch thông báo thành công ở trên dù có lỗi.
     try{
-      const list = await loadHistory();
-      list.push({ ngay: payload.ngay, hoTen: payload.hoTen, viTri: viTri, tenPhong: payload.tenPhong, tongSo: payload.tongSo });
-      await saveHistory(list);
-      config.hoTen = payload.hoTen;
-      await saveConfig();
-      await renderHistory();
-      await updateTicket();
+      const list = loadHistory();
+      list.push(payload);
+      saveHistory(list);
+      saveLastName(payload.hoTen);
+      renderHistory();
+      updateTicket();
+      downloadBackup(list);
     }catch(bookkeepingErr){
       console.error('Lỗi ghi sổ phụ cục bộ (không ảnh hưởng đến Google Sheet)', bookkeepingErr);
     }
+
+    // Hiện tin nhắn tự động để copy
+    $('msgPreviewText').textContent = buildMessage(payload);
+    $('msgPreview').classList.add('show');
 
     // reset các trường trừ ngày & họ tên
     $('caLam').value = '';
@@ -571,30 +479,20 @@ $('reportForm').addEventListener('submit', async (e)=>{
 
   }catch(err){
     formMsg.className = 'msg err';
-    formMsg.textContent = '✗ Gửi thất bại (' + err.message + '). Kiểm tra lại kết nối Google Sheet ở nút ⚙.';
+    formMsg.textContent = '✗ Gửi thất bại (' + err.message + '). Kiểm tra lại kết nối mạng.';
   }finally{
     btn.disabled = false;
     btn.textContent = 'Ghi nhận';
   }
 });
 
-async function updateTicket(){
-  const list = await loadHistory();
-  const today = todayStr();
-  const count = list.filter(x => x.ngay === today).length;
-  $('ticketNo').textContent = ticketNumberFor(today, count);
-  const d = new Date(today);
-  $('ticketDate').textContent = d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
-}
-
-async function init(){
+function init(){
   $('ngay').value = todayStr();
   updateLabels();
-  await loadConfig();
-  refreshConfigUI();
-  if(!config.url) showSetup();
-  await renderHistory();
-  await updateTicket();
+  const lastName = loadLastName();
+  if(lastName) $('hoTen').value = lastName;
+  renderHistory();
+  updateTicket();
 }
 
 init();
