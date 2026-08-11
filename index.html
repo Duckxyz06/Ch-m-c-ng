@@ -446,7 +446,11 @@ async function loadConfig(){
 }
 
 async function saveConfig(){
-  await window.storage.set('config', JSON.stringify(config), false);
+  try{
+    await window.storage.set('config', JSON.stringify(config), false);
+  }catch(e){
+    console.error('Lỗi lưu config (không ảnh hưởng đến việc gửi phiếu)', e);
+  }
 }
 
 function refreshConfigUI(){
@@ -544,13 +548,19 @@ $('reportForm').addEventListener('submit', async (e)=>{
     formMsg.className = 'msg ok';
     formMsg.textContent = '✓ Đã ghi nhận và lưu vào Google Sheet.';
 
-    const list = await loadHistory();
-    list.push({ ngay: payload.ngay, hoTen: payload.hoTen, viTri: viTri, tenPhong: payload.tenPhong, tongSo: payload.tongSo });
-    await saveHistory(list);
-    config.hoTen = payload.hoTen;
-    await saveConfig();
-    await renderHistory();
-    await updateTicket();
+    // Các thao tác phụ bên dưới (lưu lịch sử cục bộ, số phiếu...) không được
+    // làm thay đổi thông báo thành công ở trên, dù chúng có lỗi.
+    try{
+      const list = await loadHistory();
+      list.push({ ngay: payload.ngay, hoTen: payload.hoTen, viTri: viTri, tenPhong: payload.tenPhong, tongSo: payload.tongSo });
+      await saveHistory(list);
+      config.hoTen = payload.hoTen;
+      await saveConfig();
+      await renderHistory();
+      await updateTicket();
+    }catch(bookkeepingErr){
+      console.error('Lỗi ghi sổ phụ cục bộ (không ảnh hưởng đến Google Sheet)', bookkeepingErr);
+    }
 
     // reset các trường trừ ngày & họ tên
     $('caLam').value = '';
