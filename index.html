@@ -96,6 +96,7 @@
   }
   .tab.active[data-v="scan"]{color:var(--stamp-dark);}
   .tab.active[data-v="xuly"]{color:var(--green);}
+  .tab.active[data-v="nhaplieu"]{color:#7a5a1e;}
 
   .submit-btn{
     width:100%; margin-top:6px; padding:14px; background:var(--stamp); color:#fbeee2; border:none;
@@ -143,6 +144,7 @@
   }
 
   .footer-note{ text-align:center; color:#9a8f76; font-size:11px; margin-top:14px; line-height:1.6; }
+  .hidden{ display:none !important; }
 </style>
 </head>
 <body>
@@ -183,6 +185,7 @@
           <div class="tabs" id="viTriTabs">
             <div class="tab active" data-v="scan">SCAN</div>
             <div class="tab" data-v="xuly">XỬ LÝ</div>
+            <div class="tab" data-v="nhaplieu">NHẬP LIỆU</div>
           </div>
         </div>
 
@@ -195,6 +198,12 @@
           <label id="tongSoLabel">Tổng số HS đã scan</label>
           <input type="text" id="tongSo" placeholder="VD: 250 HS" required>
           <div class="hint" id="tongSoHint">Chỉ ghi số tổng.</div>
+        </div>
+
+        <div class="field hidden" id="chiTietField">
+          <label>Chi tiết từng hồ sơ (nếu có)</label>
+          <textarea id="chiTietHS" placeholder="VD:&#10;HS số 23, 50 tài liệu (đã xong)&#10;HS số 20, 44/127 tài liệu (Hộp số 4)"></textarea>
+          <div class="hint">Mỗi hồ sơ 1 dòng, ghi rõ HS số mấy, đã nhập bao nhiêu/tổng bao nhiêu tài liệu.</div>
         </div>
 
         <div class="field">
@@ -252,11 +261,19 @@ function updateLabels(){
     $('tongSoLabel').textContent = 'Tổng số HS đã scan';
     $('tongSo').placeholder = 'VD: 250 HS';
     $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 250 HS.';
-  } else {
+    $('chiTietField').classList.add('hidden');
+  } else if(viTri === 'xuly'){
     $('tenPhongLabel').textContent = 'Tên phông đã xử lý';
     $('tongSoLabel').textContent = 'Tổng HS đã xử lý ảnh';
     $('tongSo').placeholder = 'VD: 200 HS';
     $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 200 HS.';
+    $('chiTietField').classList.add('hidden');
+  } else {
+    $('tenPhongLabel').textContent = 'Tên phông đã nhập liệu';
+    $('tongSoLabel').textContent = 'Tổng số HS đã nhập liệu';
+    $('tongSo').placeholder = 'VD: 2 HS';
+    $('tongSoHint').textContent = 'Chỉ ghi số tổng, ví dụ: 2 HS.';
+    $('chiTietField').classList.remove('hidden');
   }
 }
 
@@ -303,7 +320,7 @@ function renderHistory(){
   }
   el.innerHTML = todays.map(x => `
     <div class="history-item">
-      <b>${x.hoTen}</b> · ${x.viTri === 'Scan' ? 'Scan' : 'Xử lý'} · ${x.tenPhong} — ${x.tongSo}
+      <b>${x.hoTen}</b> · ${x.viTri} · ${x.tenPhong} — ${x.tongSo}
     </div>
   `).join('');
 }
@@ -376,21 +393,34 @@ $('restoreFile').addEventListener('change', (e)=>{
 });
 
 // ---------- Tin nhắn tự động theo mẫu báo cáo gốc ----------
+function actionWordFor(viTriLabel){
+  if(viTriLabel === 'Scan') return 'scan';
+  if(viTriLabel === 'Xử lý') return 'xử lý';
+  return 'nhập liệu';
+}
+
 function buildMessage(payload){
   const parts = payload.ngay.split('-');
   const ngayVN = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : payload.ngay;
-  const viTriLabel = payload.viTri;
-  const tongSoLabel = payload.viTri === 'Scan' ? 'Tổng số HS đã scan' : 'Tổng HS đã xử lý ảnh';
+  const action = actionWordFor(payload.viTri);
+  const tongSoLabel = payload.viTri === 'Scan' ? 'Tổng số HS đã scan'
+    : payload.viTri === 'Xử lý' ? 'Tổng HS đã xử lý ảnh'
+    : 'Tổng số HS đã nhập liệu';
   const lines = [
     `BÁO CÁO CÔNG VIỆC NGÀY ${ngayVN}`,
     `Ca làm: ${payload.caLam}`,
     `Họ tên: ${payload.hoTen}`,
-    `Vị trí: ${viTriLabel}`,
-    `- Tên phông đã ${payload.viTri === 'Scan' ? 'scan' : 'xử lý'}: ${payload.tenPhong}`,
-    `+ ${tongSoLabel}: ${payload.tongSo}`,
-    `• Tình trạng tài liệu/Khó khăn trong quá trình làm: ${payload.khoKhan || 'Không có'}`,
-    `• Đề xuất (nếu có): ${payload.deXuat || 'Không có'}`
+    `Vị trí: ${payload.viTri}`,
+    `- Tên phông đã ${action}: ${payload.tenPhong}`,
+    `+ ${tongSoLabel}: ${payload.tongSo}`
   ];
+  if(payload.chiTiet && payload.chiTiet.trim()){
+    payload.chiTiet.split('\n').forEach(line=>{
+      if(line.trim()) lines.push(`   ${line.trim()}`);
+    });
+  }
+  lines.push(`• Tình trạng tài liệu/Khó khăn trong quá trình làm: ${payload.khoKhan || 'Không có'}`);
+  lines.push(`• Đề xuất (nếu có): ${payload.deXuat || 'Không có'}`);
   return lines.join('\n');
 }
 
@@ -423,13 +453,15 @@ $('reportForm').addEventListener('submit', async (e)=>{
   formMsg.className = 'msg';
   $('msgPreview').classList.remove('show');
 
+  const viTriLabel = viTri === 'scan' ? 'Scan' : viTri === 'xuly' ? 'Xử lý' : 'Nhập liệu';
   const payload = {
     ngay: $('ngay').value,
     caLam: $('caLam').value.trim(),
     hoTen: $('hoTen').value.trim(),
-    viTri: viTri === 'scan' ? 'Scan' : 'Xử lý',
+    viTri: viTriLabel,
     tenPhong: $('tenPhong').value.trim(),
     tongSo: $('tongSo').value.trim(),
+    chiTiet: viTri === 'nhaplieu' ? $('chiTietHS').value.trim() : '',
     khoKhan: $('khoKhan').value.trim(),
     deXuat: $('deXuat').value.trim(),
     submittedAt: new Date().toISOString()
@@ -474,6 +506,7 @@ $('reportForm').addEventListener('submit', async (e)=>{
     $('caLam').value = '';
     $('tenPhong').value = '';
     $('tongSo').value = '';
+    $('chiTietHS').value = '';
     $('khoKhan').value = '';
     $('deXuat').value = '';
 
